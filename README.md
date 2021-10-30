@@ -32,7 +32,7 @@ $ sudo apt upgrade
 Next, a few packages need to be installed, these are mostly various helpers for installing PhotoPrism:
 
 ```shell
-$ sudo apt install gcc g++ git gnupg make zip unzip
+$ sudo apt install -y gcc g++ git gnupg make zip unzip
 ```
 
 #### Node.js
@@ -179,6 +179,7 @@ Group=photoprism
 WorkingDirectory=/opt/photoprism
 EnvironmentFile=/opt/photoprism/.env
 ExecStart=/opt/photoprism/.local/bin/photoprism up -d
+ExecStop=/opt/photoprism/.local/bin/photoprism down
 
 [Install]
 WantedBy=multi-user.target
