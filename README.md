@@ -76,7 +76,7 @@ See <https://dl.photoprism.org/tensorflow/> for downloads for other platforms (l
 Instead of running Photoprism as root or your own user, it is advisable to create a separate user account for it:
 
 ```shell
-$ sudo useradd --system -m -d /opt/photoprism photoprism
+$ sudo useradd --system -m -d /opt/photoprism -s /bin/bash photoprism
 ```
 
 This will assume that all PhotoPrism-related files go to `/opt/photoprism`. If you would like to use another location, change it in the above and following commands.
