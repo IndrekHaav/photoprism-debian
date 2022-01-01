@@ -61,7 +61,7 @@ This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to 
 
 #### Tensorflow
 
-[Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website:
+[Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. In most cases, if you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the AVX2 version. For older CPUs, use the AVX version by replacing "avx2" with "avx" in the below commands. If in doubt, check what your CPU supports by running `lscpu | grep --color avx`.
 
 ```shell
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx2-1.15.2.tar.gz
@@ -69,7 +69,7 @@ $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo ldconfig
 ```
 
-See <https://dl.photoprism.org/tensorflow/> for downloads for other platforms (like ARM).
+See <https://dl.photoprism.org/tensorflow/> for download URLs for other platforms (like ARM).
 
 ### System setup
 
