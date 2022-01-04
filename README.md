@@ -63,27 +63,25 @@ This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to 
 
 [Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. 
 
-Choose the best supported Tensorflow build set your CPU supports by running `lscpu | grep --color -e Flags -e avx` and look for "avx2" or "avx". If neither is present, use "cpu".
+Choose the appropriate Tensorflow build based on whether your CPU supports the [AVX or AVX2 instruction sets](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). You can check by running `lscpu | grep --color avx`.
 
-If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the AVX2 version. 
+If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the "avx2" version:
 
-*avx2 flag*
 ```shell
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo ldconfig
 ``` 
 
-**OR**
+For [older CPUs](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX), use the "avx" version:
 
-*avx flag*
 ```shell
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx-1.15.2.tar.gz
 $ sudo ldconfig
 ```
 
-**ELSE**
+If your CPU supports neither instruction set, use the "cpu" version:
 
 ```shell
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-cpu-1.15.2.tar.gz
@@ -91,13 +89,13 @@ $ sudo tar -C /usr/local -xzf libtensorflow-linux-cpu-1.15.2.tar.gz
 $ sudo ldconfig
 ```
 
-If an unsupported version is chosen, the Photoprism service will fail to start with output "Illegal operation". To repair, just run the above steps again with the corrected archive path.
+If an unsupported version is chosen, the PhotoPrism service will fail to start with an "Illegal operation" error. To repair, just run the above steps again with the corrected archive path.
 
 See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms (like ARM).
 
 ### System setup
 
-Instead of running Photoprism as root or your own user, it is advisable to create a separate user account for it:
+Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
 
 ```shell
 $ sudo useradd --system -m -d /opt/photoprism -s /bin/bash photoprism
@@ -136,7 +134,7 @@ $ make install
 
 The first command downloads the various dependencies for Tensorflow, the Node.js front-end and the Golang back-end. The second command builds the front-end. The third command builds the PhotoPrism production binary, copies it to `~/.local/bin/photoprism`, and copies the front-end assets to `~/.photoprism/assets`.
 
-This will take about 1GB of RAM, and the build may crash with Javascript running out of memory, so allocate at least 2GB or prepend the `make` commands with `NODE_OPTIONS=--max_old_space_size=2048 make build-js`.
+Building the front-end can take more than 1 GB of RAM, and the build might crash with Javascript running out of memory. If using a virtual machine, allocate at least 2 GB. Alternatively, run that step with `NODE_OPTIONS=--max_old_space_size=2048 make build-js`.
 
 Check the [Makefile](https://github.com/photoprism/photoprism/blob/develop/Makefile) for all `make` targets.
 
@@ -195,7 +193,7 @@ Add the following contents:
 
 ```
 [Unit]
-Description=Photoprism service
+Description=PhotoPrism service
 After=network.target
 
 [Service]
@@ -219,7 +217,7 @@ $ sudo systemctl start photoprism
 $ sudo systemctl enable photoprism
 ```
 
-If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface and log in as `admin` with the password set in the `.env` file. 
+If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
 
 ### Troubleshooting
 
