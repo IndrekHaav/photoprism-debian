@@ -134,7 +134,11 @@ $ make install
 
 The first command downloads the various dependencies for Tensorflow, the Node.js front-end and the Golang back-end. The second command builds the front-end. The third command builds the PhotoPrism production binary, copies it to `~/.local/bin/photoprism`, and copies the front-end assets to `~/.photoprism/assets`.
 
-Building the front-end can take more than 1 GB of RAM, and the build might crash with Javascript running out of memory. If using a virtual machine, allocate at least 2 GB. Alternatively, run that step with `NODE_OPTIONS=--max_old_space_size=2048 make build-js`.
+Building the front-end can take more than 1 GB of RAM, and the build might crash with Javascript running out of memory. If using a virtual machine, allocate at least 2 GB. Alternatively, you can try limiting Node's memory usage as follows (adjust the number based on available RAM on your system):
+
+```shell
+$ NODE_OPTIONS=--max_old_space_size=1024 make build-js
+```
 
 Check the [Makefile](https://github.com/photoprism/photoprism/blob/develop/Makefile) for all `make` targets.
 
