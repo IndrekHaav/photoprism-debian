@@ -49,11 +49,11 @@ $ sudo apt install -y nodejs
 
 #### Golang
 
-[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.17.2, but check the website and change the URLs below if necessary:
+[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.17.5, but check the website and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.17.5.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.17.5.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
 ```
 
@@ -61,15 +61,39 @@ This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to 
 
 #### Tensorflow
 
-[Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. In most cases, if you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the AVX2 version. For older CPUs, use the AVX version by replacing "avx2" with "avx" in the below commands. If in doubt, check what your CPU supports by running `lscpu | grep --color avx`.
+[Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. 
 
+Choose the best supported Tensorflow build set your CPU supports by running `lscpu | grep --color -e Flags -e avx` and look for "avx2" or "avx". If neither is present, use "cpu".
+
+If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the AVX2 version. 
+
+*avx2 flag*
 ```shell
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo ldconfig
+``` 
+
+**OR**
+
+*avx flag*
+```shell
+$ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx-1.15.2.tar.gz
+$ sudo tar -C /usr/local -xzf libtensorflow-linux-avx-1.15.2.tar.gz
+$ sudo ldconfig
 ```
 
-See <https://dl.photoprism.org/tensorflow/> for download URLs for other platforms (like ARM).
+**ELSE**
+
+```shell
+$ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-cpu-1.15.2.tar.gz
+$ sudo tar -C /usr/local -xzf libtensorflow-linux-cpu-1.15.2.tar.gz
+$ sudo ldconfig
+```
+
+If an unsupported version is chosen, the Photoprism service will fail to start with output "Illegal operation". To repair, just run the above steps again with the corrected archive path.
+
+See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms (like ARM).
 
 ### System setup
 
@@ -112,6 +136,8 @@ $ make install
 
 The first command downloads the various dependencies for Tensorflow, the Node.js front-end and the Golang back-end. The second command builds the front-end. The third command builds the PhotoPrism production binary, copies it to `~/.local/bin/photoprism`, and copies the front-end assets to `~/.photoprism/assets`.
 
+This will take about 1GB of RAM, and the build may crash with Javascript running out of memory, so allocate at least 2GB or prepend the `make` commands with `NODE_OPTIONS=--max_old_space_size=2048 make build-js`.
+
 Check the [Makefile](https://github.com/photoprism/photoprism/blob/develop/Makefile) for all `make` targets.
 
 ### Configure PhotoPrism:
@@ -139,12 +165,12 @@ PHOTOPRISM_IMPORT_PATH="/mnt/photos/Import"
 # PhotoPrism storage directory, if you set it up above
 PHOTOPRISM_STORAGE_PATH="/var/lib/photoprism"
 
-# If using MariaDB/MySQL instead of SQLite
-PHOTOPRISM_DATABASE_DRIVER="mysql"
-PHOTOPRISM_DATABASE_SERVER="MYSQL_IP_HERE"
-PHOTOPRISM_DATABASE_NAME="DB_NAME"
-PHOTOPRISM_DATABASE_USER="USER_NAME"
-PHOTOPRISM_DATABASE_PASSWORD="PASSWORD"
+# Uncomment below if using MariaDB/MySQL instead of SQLite (the default)
+# PHOTOPRISM_DATABASE_DRIVER="mysql"
+# PHOTOPRISM_DATABASE_SERVER="MYSQL_IP_HERE"
+# PHOTOPRISM_DATABASE_NAME="DB_NAME"
+# PHOTOPRISM_DATABASE_USER="USER_NAME"
+# PHOTOPRISM_DATABASE_PASSWORD="PASSWORD"
 ```
 
 Press `Ctrl+O` and `Enter` to save, then `Ctrl+X` to exit Nano. Now enter the following command:
@@ -193,7 +219,11 @@ $ sudo systemctl start photoprism
 $ sudo systemctl enable photoprism
 ```
 
-If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. If not, run the following command to check the service status:
+If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface and log in as `admin` with the password set in the `.env` file. 
+
+### Troubleshooting
+
+Run the following command to check the service status:
 
 ```shell
 $ systemctl status photoprism
