@@ -123,10 +123,11 @@ $ sudo -u photoprism -i
 $ git clone https://github.com/photoprism/photoprism.git src
 ```
 
-Change to the `src` directory and run the following commands to install PhotoPrism:
+Change to the `src` directory, switch to the "release" branch and run the following commands to install PhotoPrism:
 
 ```shell
 $ cd src
+$ git checkout release
 $ make dep
 $ make build-js
 $ make install
