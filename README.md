@@ -49,11 +49,11 @@ $ sudo apt install -y nodejs
 
 #### Golang
 
-[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.17.5, but check the website and change the URLs below if necessary:
+[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.17.7, but check the website and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.17.5.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.17.5.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.17.7.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.17.7.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
 ```
 
