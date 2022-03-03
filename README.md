@@ -43,7 +43,6 @@ While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, 
 $ wget https://deb.nodesource.com/setup_16.x -O node_setup.sh
 $ chmod +x node_setup.sh
 $ sudo ./node_setup.sh
-$ sudo apt update
 $ sudo apt install -y nodejs
 ```
 
@@ -63,7 +62,7 @@ This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to 
 
 [Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. 
 
-Choose the appropriate Tensorflow build based on whether your CPU supports the [AVX or AVX2 instruction sets](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). You can check by running `lscpu | grep --color avx`.
+Choose the appropriate Tensorflow build based on whether your CPU supports the [AVX or AVX2 instruction sets](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). You can check by running `lscpu | egrep --color avx2?`.
 
 If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the "avx2" version:
 
@@ -98,58 +97,58 @@ See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms
 Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
 
 ```shell
-$ sudo useradd --system -m -d /opt/photoprism -s /bin/bash photoprism
+$ sudo useradd --system photoprism
 ```
 
-This will assume that all PhotoPrism-related files go to `/opt/photoprism`. If you would like to use another location, change it in the above and following commands.
+#### Application directory
 
-#### Optional: storage directory
+Create a directory where the compiled PhotoPrism code will be stored:
 
-If you want to use a separate location for files like metadata, thumbnails, database (if using SQLite) and so on, create it now:
+```shell
+$ sudo mkdir -p /opt/photoprism/bin
+```
+
+#### Storage directory
+
+Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
 
 ```shell
 $ sudo mkdir /var/lib/photoprism
 $ sudo chown photoprism:photoprism /var/lib/photoprism
 ```
 
-Change the name of the directory to whatever you prefer to use.
-
 ### Download and install PhotoPrism
 
-Now switch to the newly-added user account and download the PhotoPrism source code:
+Now download the PhotoPrism source code:
 
 ```shell
-$ sudo -u photoprism -i
-$ git clone https://github.com/photoprism/photoprism.git src
-```
-
-Change to the `src` directory, switch to the "release" branch and run the following commands to install PhotoPrism:
-
-```shell
-$ cd src
+$ git clone https://github.com/photoprism/photoprism.git
+$ cd photoprism
 $ git checkout release
-$ make dep
-$ make build-js
-$ make install
 ```
 
-The first command downloads the various dependencies for Tensorflow, the Node.js front-end and the Golang back-end. The second command builds the front-end. The third command builds the PhotoPrism production binary, copies it to `~/.local/bin/photoprism`, and copies the front-end assets to `~/.photoprism/assets`.
+Then run the following commands to download the various dependencies for Tensorflow, the Node.js front-end and the Golang back-end, and install PhotoPrism in `/opt/photoprism`:
+
+```shell
+$ sudo make all
+$ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
+$ sudo cp -a assets/ /opt/photoprism/assets/
+$ sudo chown -R photoprism:photoprism /opt/photoprism
+```
 
 Building the front-end can take more than 1 GB of RAM, and the build might crash with Javascript running out of memory. If using a virtual machine, allocate at least 2 GB. Alternatively, you can try limiting Node's memory usage as follows (adjust the number based on available RAM on your system):
 
 ```shell
-$ NODE_OPTIONS=--max_old_space_size=1024 make build-js
+$ NODE_OPTIONS=--max_old_space_size=1024 make all
 ```
-
-Check the [Makefile](https://github.com/photoprism/photoprism/blob/develop/Makefile) for all `make` targets.
 
 ### Configure PhotoPrism:
 
-Go up a directory, to `/opt/photoprism`, and create a file for PhotoPrism configuration parameters:
+Go to `/var/lib/photoprism` and create a file for PhotoPrism configuration parameters:
 
 ```shell
-$ cd ..
-$ nano .env
+$ cd /var/lib/photoprism
+$ sudo nano .env
 ```
 
 This opens the file in the [Nano](https://www.nano-editor.org/) text editor. Feel free to use another editor if you have a preference, but this guide will assume Nano.
@@ -160,13 +159,10 @@ The full list of configuration options is available [here](https://docs.photopri
 # Initial password for the admin user
 PHOTOPRISM_ADMIN_PASSWORD="photoprism"
 
-# Locations for the Import and Originals directories
-# Best to keep these on redundant storage
-PHOTOPRISM_ORIGINALS_PATH="/mnt/photos/Originals"
-PHOTOPRISM_IMPORT_PATH="/mnt/photos/Import"
-
-# PhotoPrism storage directory, if you set it up above
+# PhotoPrism storage directories
 PHOTOPRISM_STORAGE_PATH="/var/lib/photoprism"
+PHOTOPRISM_ORIGINALS_PATH="/var/lib/photoprism/photos/Originals"
+PHOTOPRISM_IMPORT_PATH="/var/lib/photoprism/photos/Import"
 
 # Uncomment below if using MariaDB/MySQL instead of SQLite (the default)
 # PHOTOPRISM_DATABASE_DRIVER="mysql"
@@ -179,16 +175,16 @@ PHOTOPRISM_STORAGE_PATH="/var/lib/photoprism"
 Press `Ctrl+O` and `Enter` to save, then `Ctrl+X` to exit Nano. Now enter the following command:
 
 ```shell
-$ chmod 640 .env
+$ sudo chmod 640 .env
 ```
 
 This ensures that the file cannot be read by other users on the system, as it contains sensitive details.
 
-The last step is setting up a system service so PhotoPrism can run automatically in the background.
-
 ### System service
 
-There's nothing else to do as the PhotoPrism user, so type `exit` to switch back to your own user account. Then create a file for the service definition:
+The last step is setting up a system service so PhotoPrism can run automatically in the background.
+
+Create a file for the service definition:
 
 ```shell
 $ sudo nano /etc/systemd/system/photoprism.service
@@ -206,9 +202,9 @@ Type=forking
 User=photoprism
 Group=photoprism
 WorkingDirectory=/opt/photoprism
-EnvironmentFile=/opt/photoprism/.env
-ExecStart=/opt/photoprism/.local/bin/photoprism up -d
-ExecStop=/opt/photoprism/.local/bin/photoprism down
+EnvironmentFile=/var/lib/photoprism/.env
+ExecStart=/opt/photoprism/bin/photoprism up -d
+ExecStop=/opt/photoprism/bin/photoprism down
 
 [Install]
 WantedBy=multi-user.target
