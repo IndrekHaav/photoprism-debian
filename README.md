@@ -138,11 +138,15 @@ $ sudo cp -a assets/ /opt/photoprism/assets/
 $ sudo chown -R photoprism:photoprism /opt/photoprism
 ```
 
+The dependencies step can produce errors when running in shells like ZSH. Ensure you're using Bash if this happens.
+
 Building the front-end can take more than 1 GB of RAM, and the build might crash with Javascript running out of memory. If using a virtual machine, allocate at least 2 GB. Alternatively, you can try limiting Node's memory usage as follows (adjust the number based on available RAM on your system):
 
 ```shell
 $ NODE_OPTIONS=--max_old_space_size=1024 make all
 ```
+
+If you're still having problems, consult [the PhotoPrism makefile](https://github.com/photoprism/photoprism/blob/release/Makefile#L34) for the steps that `make all` executes, and try running them individually to isolate the problem.
 
 ### Configure PhotoPrism:
 
