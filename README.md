@@ -35,6 +35,8 @@ Next, a few packages need to be installed, these are mostly various helpers for 
 $ sudo apt install -y gcc g++ git gnupg make zip unzip
 ```
 
+> **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
+
 #### Node.js
 
 While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, the version there is pretty old. [Nodesource](https://github.com/nodesource/distributions#deb) provides up-to-date versions. The latest LTS version as of the writing of this is v16, so install that:
