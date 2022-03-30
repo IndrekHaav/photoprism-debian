@@ -14,11 +14,11 @@ As of the publishing of this document (30.03.2022), [a PhotoPrism install script
   
 - Attribution was removed in commit https://github.com/tteck/Proxmox/commit/d72e734
 
-- Also, the Github issue about this was deleted.
+- Also, the Github issue about this was deleted
 
 - A new issue was created, to respond to the last comment: https://github.com/tteck/Proxmox/issues/112
 
-- The new issue was almost immediately deleted, archived version is here: https://web.archive.org/web/20220330115410/https://github.com/tteck/Proxmox/issues/112#start-of-content
+- The new issue was almost immediately deleted, but not before being archived: https://web.archive.org/web/20220330115410/https://github.com/tteck/Proxmox/issues/112#start-of-content
 
 - A Github discussion was started, to ask about why the issues are getting deleted: https://github.com/tteck/Proxmox/discussions/113
 
