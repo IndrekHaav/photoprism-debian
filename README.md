@@ -1,5 +1,3 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/IndrekHaav/photoprism-debian/link-check?label=link-check)](https://github.com/IndrekHaav/photoprism-debian/actions/workflows/link-check.yml)
-
 # Installing PhotoPrism on Debian
 
 ## Background
