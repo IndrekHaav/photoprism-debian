@@ -7,12 +7,16 @@ As of the publishing of this document (30.03.2022), [a PhotoPrism install script
 - Author of the script initially agreed to add attribution (screenshot of Github notification email):
   ![Screenshot 1](./email_1.png)
   
-- Attribution was added in commit https://github.com/tteck/Proxmox/commit/380e387
+- Attribution was added in commit https://github.com/tteck/Proxmox/commit/380e387:
+
+  ![Commit 1](./commit_1.png)
 
 - Shortly afterwards, author of the script changed their mind (screenshot of Github notification email):
   ![Screenshot 2](./email_2.png)
   
-- Attribution was removed in commit https://github.com/tteck/Proxmox/commit/d72e734
+- Attribution was removed in commit https://github.com/tteck/Proxmox/commit/d72e734:
+
+  ![Commit 2](./commit_2.png)
 
 - Also, the Github issue about this was deleted
 
