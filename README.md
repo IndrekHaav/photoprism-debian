@@ -72,7 +72,7 @@ If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vec
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo ldconfig
-``` 
+```
 
 For [older CPUs](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX), use the "avx" version:
 
@@ -225,6 +225,40 @@ $ sudo systemctl enable photoprism
 ```
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
+
+### Updating PhotoPrism
+
+New versions of PhotoPrism are published to their Github repository: https://github.com/photoprism/photoprism/releases
+
+If a new version is published, the following steps need to be done.
+
+First, stop the PhotoPrism service:
+
+```shell
+$ sudo systemctl stop photoprism
+```
+
+Then, navigate to the PhotoPrism source code directory and pull the latest version from Github:
+
+```shell
+$ cd photoprism
+$ git pull --force
+```
+
+Re-run the build steps from above:
+
+```shell
+$ sudo make all
+$ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
+$ sudo cp -a assets/ /opt/photoprism/assets/
+$ sudo chown -R photoprism:photoprism /opt/photoprism
+```
+
+Finally, restart the PhotoPrism service:
+
+```shell
+$ sudo systemctl start photoprism
+```
 
 ### Troubleshooting
 
