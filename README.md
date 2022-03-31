@@ -62,7 +62,7 @@ This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to 
 
 [Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. 
 
-Choose the appropriate Tensorflow build based on whether your CPU supports the [AVX or AVX2 instruction sets](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). You can check by running `lscpu | egrep --color avx2?`.
+Choose the appropriate Tensorflow build based on whether your CPU supports the [AVX or AVX2 instruction sets](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). You can check by running `lscpu | grep -Eo 'avx2?\W'`.
 
 If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX2), you'll want the "avx2" version:
 
