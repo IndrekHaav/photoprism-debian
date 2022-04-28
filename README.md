@@ -224,6 +224,28 @@ $ sudo systemctl enable photoprism
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
 
+### Automatic import
+
+It's possible to have PhotoPrism automatically import any photos that have been added to the Imports directory, using a cron job.
+
+Create a file for the cron job:
+
+```shell
+$ sudo nano /etc/cron.d/photoprism
+```
+
+Enter the following contents:
+
+```
+0 * * * * photoprism export $(grep -v ^# /var/lib/photoprism/.env | xargs) && /opt/photoprism/bin/photoprism import >/dev/null 2>&1
+```
+
+This runs the PhotoPrism `import` command every hour. If you want to run it more (or less) frequently, change the time expression at the beginning accordingly. Use a helper like <https://crontab.cronhub.io> if needed.
+
+It's also possible to run other commands. For example, if you add photos directly to the Originals directory and just need PhotoPrism to index them, change `import` to `index` in the cron file. Run `/opt/photoprism/bin/photoprism` to get a full list of commands that can be executed.
+
+For logging, replace `/dev/null` with the name of a log file (make sure the photoprism user can write to it). This can be helpful for troubleshooting.
+
 ## Updating PhotoPrism
 
 New versions of PhotoPrism are published to their Github repository: https://github.com/photoprism/photoprism/releases
