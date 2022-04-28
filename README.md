@@ -224,7 +224,7 @@ $ sudo systemctl enable photoprism
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
 
-### Updating PhotoPrism
+## Updating PhotoPrism
 
 New versions of PhotoPrism are published to their Github repository: https://github.com/photoprism/photoprism/releases
 
@@ -258,7 +258,7 @@ Finally, restart the PhotoPrism service:
 $ sudo systemctl start photoprism
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 Run the following command to check the service status:
 
