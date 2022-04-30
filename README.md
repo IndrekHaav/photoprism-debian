@@ -246,6 +246,80 @@ It's also possible to run other commands. For example, if you add photos directl
 
 For logging, replace `/dev/null` with the name of a log file (make sure the photoprism user can write to it). This can be helpful for troubleshooting.
 
+If you prefer to use systemd to run the indexing or importing you can create a systemd service similar to the one above: 
+
+Create a file for the service definition:
+
+```shell
+$ sudo nano /etc/systemd/system/photoprismindex.service
+```
+
+Add the following contents:
+
+```
+[Unit]
+Description=PhotoPrism index service
+After=network.target
+
+[Service]
+Type=oneshot
+User=photoprism
+Group=photoprism
+WorkingDirectory=/opt/photoprism
+EnvironmentFile=/var/lib/photoprism/.env
+ExecStart=/opt/photoprism/bin/photoprism index
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Run the following command to run the index service once. 
+
+```shell
+$ sudo systemctl daemon-reload
+$ sudo systemctl start photoprismindex
+```
+
+Since it is a oneshot service we will use a systemd timer to run it automatically, in this example every 10 minutes. 
+
+Create a file for the service definition:
+
+```shell
+$ sudo nano /etc/systemd/system/photoprismindex.timer
+```
+
+Add the following contents:
+
+```
+[Unit]
+Description="Run photoprism index"
+
+[Timer]
+OnCalendar=*:0/10
+Unit=photoprismindex.service
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Run the following command to enable the timer. 
+
+```shell
+$ systemctl enable photoprismindex.timer
+```
+
+Run the following command to check the index service status:
+
+```shell
+$ systemctl status photoprismindex
+```
+
+Run the following command to check the index timer status:
+
+```shell
+systemctl list-timers photoprismindex
+```
+
 ## Updating PhotoPrism
 
 New versions of PhotoPrism are published to their Github repository: https://github.com/photoprism/photoprism/releases
