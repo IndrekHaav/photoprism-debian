@@ -224,9 +224,9 @@ $ sudo systemctl enable photoprism
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
 
-### Automatic import
+### Automatic background tasks
 
-It's possible to have PhotoPrism automatically import any photos that have been added to the Imports directory, using a cron job.
+It's possible to have PhotoPrism automatically run background tasks, like importing any photos that have been added to the Imports directory, using a cron job.
 
 Create a file for the cron job:
 
@@ -242,25 +242,25 @@ Enter the following contents:
 
 This runs the PhotoPrism `import` command every hour. If you want to run it more (or less) frequently, change the time expression at the beginning accordingly. Use a helper like <https://crontab.cronhub.io> if needed.
 
-It's also possible to run other commands. For example, if you add photos directly to the Originals directory and just need PhotoPrism to index them, change `import` to `index` in the cron file. Run `/opt/photoprism/bin/photoprism` to get a full list of commands that can be executed.
+It's also possible to run other commands. For example, if you add photos directly to the Originals directory and just need PhotoPrism to index them, change `import` to `index`. Run `/opt/photoprism/bin/photoprism` to get a full list of commands that can be executed.
 
 For logging, replace `/dev/null` with the name of a log file (make sure the photoprism user can write to it). This can be helpful for troubleshooting.
 
 #### Alternative method
 
-If you prefer to use systemd to run the indexing or importing you can create a systemd service similar to the one above: 
+It is also possible to use a systemd service and timer to run the background tasks. See [this comparison against cron](https://wiki.archlinux.org/title/Systemd/Timers#As_a_cron_replacement) for pros and cons.
 
 Create a file for the service definition:
 
 ```shell
-$ sudo nano /etc/systemd/system/photoprismindex.service
+$ sudo nano /etc/systemd/system/photoprism-bg.service
 ```
 
 Add the following contents:
 
 ```
 [Unit]
-Description=PhotoPrism index service
+Description=PhotoPrism background tasks
 After=network.target
 
 [Service]
@@ -269,58 +269,55 @@ User=photoprism
 Group=photoprism
 WorkingDirectory=/opt/photoprism
 EnvironmentFile=/var/lib/photoprism/.env
-ExecStart=/opt/photoprism/bin/photoprism index
+ExecStart=/opt/photoprism/bin/photoprism import
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-Run the following commands to run the index service once:
+Again, change `import` to whatever command you need to execute.
 
-```shell
-$ sudo systemctl daemon-reload
-$ sudo systemctl start photoprismindex
-```
-
-Since it is a oneshot service we will use a systemd timer to run it automatically, in this example every 10 minutes.
+Since it is a oneshot service, a systemd timer will be used to run it automatically, in this example every hour.
 
 Create a file for the timer definition:
 
 ```shell
-$ sudo nano /etc/systemd/system/photoprismindex.timer
+$ sudo nano /etc/systemd/system/photoprism-bg.timer
 ```
 
 Add the following contents:
 
 ```
 [Unit]
-Description="Run photoprism index"
+Description=PhotoPrism background tasks
 
 [Timer]
-OnCalendar=*:0/10
-Unit=photoprismindex.service
+OnCalendar=*:0:0
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=timers.target
 ```
+
+If you want to run the timer more (or less) frequently, change the `OnCalendar` parameter accordingly. You can use [`systemd-analyze calendar`](https://www.freedesktop.org/software/systemd/man/systemd-analyze.html#systemd-analyze%20calendar%20EXPRESSION...) to verify the syntax.
 
 Run the following commands to enable and start the timer:
 
 ```shell
-$ sudo systemctl enable photoprismindex.timer
-$ sudo systemctl start photoprismindex.timer
+$ sudo systemctl enable photoprism-bg.timer
+$ sudo systemctl start photoprism-bg.timer
 ```
 
-Run the following command to check the index service status:
+For troubleshooting, run the following command to check the service status:
 
 ```shell
-$ systemctl status photoprismindex
+$ systemctl status photoprism-bg.service
 ```
 
-Run the following command to check the index timer status:
+And run the following commands to check the timer status:
 
 ```shell
-$ systemctl list-timers photoprismindex
+$ systemctl status photoprism-bg.timer
+$ systemctl list-timers photoprism-bg
 ```
 
 ## Updating PhotoPrism
