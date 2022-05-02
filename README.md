@@ -246,6 +246,8 @@ It's also possible to run other commands. For example, if you add photos directl
 
 For logging, replace `/dev/null` with the name of a log file (make sure the photoprism user can write to it). This can be helpful for troubleshooting.
 
+#### Alternative method
+
 If you prefer to use systemd to run the indexing or importing you can create a systemd service similar to the one above: 
 
 Create a file for the service definition:
@@ -273,16 +275,16 @@ ExecStart=/opt/photoprism/bin/photoprism index
 WantedBy=multi-user.target
 ```
 
-Run the following command to run the index service once. 
+Run the following commands to run the index service once:
 
 ```shell
 $ sudo systemctl daemon-reload
 $ sudo systemctl start photoprismindex
 ```
 
-Since it is a oneshot service we will use a systemd timer to run it automatically, in this example every 10 minutes. 
+Since it is a oneshot service we will use a systemd timer to run it automatically, in this example every 10 minutes.
 
-Create a file for the service definition:
+Create a file for the timer definition:
 
 ```shell
 $ sudo nano /etc/systemd/system/photoprismindex.timer
@@ -302,10 +304,11 @@ Unit=photoprismindex.service
 WantedBy=multi-user.target
 ```
 
-Run the following command to enable the timer. 
+Run the following commands to enable and start the timer:
 
 ```shell
-$ systemctl enable photoprismindex.timer
+$ sudo systemctl enable photoprismindex.timer
+$ sudo systemctl start photoprismindex.timer
 ```
 
 Run the following command to check the index service status:
@@ -317,7 +320,7 @@ $ systemctl status photoprismindex
 Run the following command to check the index timer status:
 
 ```shell
-systemctl list-timers photoprismindex
+$ systemctl list-timers photoprismindex
 ```
 
 ## Updating PhotoPrism
