@@ -361,3 +361,5 @@ Run the following command to check the service status:
 ```shell
 $ systemctl status photoprism
 ```
+
+Also check the [PhotoPrism troubleshooting checklists](https://docs.photoprism.app/getting-started/troubleshooting/). Some of the information there is Docker-specific, but a lot is useful even with non-Docker setups.
