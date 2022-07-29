@@ -48,11 +48,11 @@ $ sudo apt install -y nodejs
 
 #### Golang
 
-[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.18.2, but check the website and change the URLs below if necessary:
+[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.18.4, but check the website and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.18.2.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.18.4.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
 ```
 
@@ -161,6 +161,7 @@ The full list of configuration options is available [here](https://docs.photopri
 
 ```
 # Initial password for the admin user
+PHOTOPRISM_AUTH_MODE="password"
 PHOTOPRISM_ADMIN_PASSWORD="photoprism"
 
 # PhotoPrism storage directories
