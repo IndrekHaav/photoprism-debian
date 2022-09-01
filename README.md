@@ -340,9 +340,10 @@ $ cd photoprism
 $ git pull --force
 ```
 
-Re-run the build steps from above:
+Upgrade dependencies and re-run the build steps from above.
 
 ```shell
+$ sudo make upgrade
 $ sudo make all
 $ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
 $ sudo cp -a assets/ /opt/photoprism/assets/
