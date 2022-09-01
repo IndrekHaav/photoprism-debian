@@ -37,10 +37,10 @@ $ sudo apt install -y gcc g++ git gnupg make zip unzip
 
 #### Node.js
 
-While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, the version there is pretty old. [Nodesource](https://github.com/nodesource/distributions#deb) provides up-to-date versions. The latest LTS version as of the writing of this is v16, so install that:
+While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, the version there is pretty old. [Nodesource](https://github.com/nodesource/distributions#deb) provides up-to-date versions. PhotoPrism recommends v18, so install that:
 
 ```shell
-$ wget https://deb.nodesource.com/setup_16.x -O node_setup.sh
+$ wget https://deb.nodesource.com/setup_18.x -O node_setup.sh
 $ chmod +x node_setup.sh
 $ sudo ./node_setup.sh
 $ sudo apt install -y nodejs
@@ -48,11 +48,11 @@ $ sudo apt install -y nodejs
 
 #### Golang
 
-[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.18.4, but check the website and change the URLs below if necessary:
+[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19, but check the website and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.18.4.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.18.4.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.19.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.19.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
 ```
 
