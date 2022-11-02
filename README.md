@@ -365,3 +365,5 @@ $ systemctl status photoprism
 ```
 
 Also check the [PhotoPrism troubleshooting checklists](https://docs.photoprism.app/getting-started/troubleshooting/). Some of the information there is Docker-specific, but a lot is useful even with non-Docker setups.
+
+If all else fails, you can try deleting `~/photoprism` (where you cloned the source code) and `/opt/photoprism` (where the built files were copied) and re-installing PhotoPrism. As long as you don't delete `/var/lib/photoprism`, your data and settings won't be lost.
