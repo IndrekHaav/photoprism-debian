@@ -44,16 +44,18 @@ $ wget https://deb.nodesource.com/setup_18.x -O node_setup.sh
 $ chmod +x node_setup.sh
 $ sudo ./node_setup.sh
 $ sudo apt install -y nodejs
+$ rm node_setup.sh
 ```
 
 #### Golang
 
-[Golang](https://golang.org/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19, but check the website and change the URLs below if necessary:
+[Golang](https://go.dev/dl/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19.3, but check the website and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.19.linux-amd64.tar.gz
-$ sudo tar -C /usr/local -xzf go1.19.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.19.3.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
+$ rm go1.19.3.linux-amd64.tar.gz
 ```
 
 This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
@@ -70,6 +72,7 @@ If you have [a reasonably recent CPU](https://en.wikipedia.org/wiki/Advanced_Vec
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx2-1.15.2.tar.gz
 $ sudo ldconfig
+$ rm libtensorflow-linux-avx2-1.15.2.tar.gz
 ```
 
 For [older CPUs](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_with_AVX), use the "avx" version:
@@ -78,6 +81,7 @@ For [older CPUs](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#CPUs_w
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-avx-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-avx-1.15.2.tar.gz
 $ sudo ldconfig
+$ rm libtensorflow-linux-avx-1.15.2.tar.gz
 ```
 
 If your CPU supports neither instruction set, use the "cpu" version:
@@ -86,6 +90,7 @@ If your CPU supports neither instruction set, use the "cpu" version:
 $ wget https://dl.photoprism.org/tensorflow/linux/libtensorflow-linux-cpu-1.15.2.tar.gz
 $ sudo tar -C /usr/local -xzf libtensorflow-linux-cpu-1.15.2.tar.gz
 $ sudo ldconfig
+$ rm libtensorflow-linux-cpu-1.15.2.tar.gz
 ```
 
 If an unsupported version is chosen, the PhotoPrism service will fail to start with an "Illegal operation" error. To repair, just run the above steps again with the corrected archive path.
@@ -327,7 +332,16 @@ New versions of PhotoPrism are published to their Github repository: https://git
 
 If a new version is published, the following steps need to be done.
 
-First, stop the PhotoPrism service:
+First, update your system:
+
+```shell
+$ sudo apt update
+$ sudo apt upgrade
+```
+
+Also check for new Golang version and install manually using [the instructions from above](#golang).
+
+Then, stop the PhotoPrism service:
 
 ```shell
 $ sudo systemctl stop photoprism
@@ -346,6 +360,7 @@ Upgrade dependencies and re-run the build steps from above.
 $ sudo make upgrade
 $ sudo make all
 $ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
+$ sudo rm -rf /opt/photoprism/assets/
 $ sudo cp -a assets/ /opt/photoprism/assets/
 $ sudo chown -R photoprism:photoprism /opt/photoprism
 ```
