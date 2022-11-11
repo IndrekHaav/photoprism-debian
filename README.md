@@ -49,16 +49,17 @@ $ rm node_setup.sh
 
 #### Golang
 
-[Golang](https://go.dev/dl/) needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19.3, but check the website and change the URLs below if necessary:
+While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19.3, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
 
 ```shell
 $ wget https://golang.org/dl/go1.19.3.linux-amd64.tar.gz
+$ sudo rm -rf /usr/local/go
 $ sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
 $ rm go1.19.3.linux-amd64.tar.gz
 ```
 
-This downloads and extracts Golang to `/usr/local/go`, and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
+This downloads and extracts Golang to `/usr/local/go` (deleting old installation, if it exists), and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
 
 #### Tensorflow
 
