@@ -98,32 +98,13 @@ If an unsupported version is chosen, the PhotoPrism service will fail to start w
 
 See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms (like ARM).
 
-### System setup
-
-Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
-
-```shell
-$ sudo useradd --system photoprism
-```
-
-#### Application directory
+### Download and install PhotoPrism
 
 Create a directory where the compiled PhotoPrism code will be stored:
 
 ```shell
 $ sudo mkdir -p /opt/photoprism/bin
 ```
-
-#### Storage directory
-
-Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
-
-```shell
-$ sudo mkdir /var/lib/photoprism
-$ sudo chown photoprism:photoprism /var/lib/photoprism
-```
-
-### Download and install PhotoPrism
 
 Now download the PhotoPrism source code:
 
@@ -151,9 +132,22 @@ $ NODE_OPTIONS=--max_old_space_size=1024 make all
 
 If you're still having problems, consult [the PhotoPrism makefile](https://github.com/photoprism/photoprism/blob/release/Makefile#L34) for the steps that `make all` executes, and try running them individually to isolate the problem.
 
-### Configure PhotoPrism:
+### Configure PhotoPrism
 
-Go to `/var/lib/photoprism` and create a file for PhotoPrism configuration parameters:
+Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
+
+```shell
+$ sudo useradd --system photoprism
+```
+
+Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
+
+```shell
+$ sudo mkdir /var/lib/photoprism
+$ sudo chown photoprism:photoprism /var/lib/photoprism
+```
+
+Go to the newly added directory and create a file for PhotoPrism configuration parameters:
 
 ```shell
 $ cd /var/lib/photoprism
