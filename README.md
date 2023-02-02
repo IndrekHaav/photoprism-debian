@@ -380,7 +380,7 @@ If all else fails, you can try deleting `~/photoprism` (where you cloned the sou
 
 In some cases you might run into a bug in PhotoPrism that has been fixed but the fix is not yet released. In that case, you can try switching to the "preview" branch (or even the bleeding-edge "develop" branch), although note that this might introduce other issues compared to the stable "release" version.
 
-To switch branches (e.g. to "preview"), go to the directory where you checked out PhotoPrism and enter the following command:
+To switch branches (e.g. to "preview"), go to the directory where you downloaded the PhotoPrism source code and enter the following command:
 
 ```shell
 $ git checkout preview
