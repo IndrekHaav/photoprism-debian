@@ -377,3 +377,13 @@ $ systemctl status photoprism
 Also check the [PhotoPrism troubleshooting checklists](https://docs.photoprism.app/getting-started/troubleshooting/). Some of the information there is Docker-specific, but a lot is useful even with non-Docker setups.
 
 If all else fails, you can try deleting `~/photoprism` (where you cloned the source code) and `/opt/photoprism` (where the built files were copied) and re-installing PhotoPrism. As long as you don't delete `/var/lib/photoprism`, your data and settings won't be lost.
+
+In some cases you might run into a bug in PhotoPrism that has been fixed but the fix is not yet released. In that case, you can try switching to the "preview" branch (or even the bleeding-edge "develop" branch), although note that this might introduce other issues compared to the stable "release" version.
+
+To switch branches (e.g. to "preview"), go to the directory where you checked out PhotoPrism and enter the following command:
+
+```shell
+$ git checkout preview
+```
+
+Then re-run the steps to build and install PhotoPrism.
