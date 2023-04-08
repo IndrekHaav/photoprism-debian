@@ -61,6 +61,8 @@ $ rm go1.19.3.linux-amd64.tar.gz
 
 This downloads and extracts Golang to `/usr/local/go` (deleting old installation, if it exists), and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
 
+> **Note:** For ARM-based devices like the Raspberry Pi, download the arm64 or armv6l version instead, depending on whether you have a 64-bit or 32-bit OS.
+
 #### Tensorflow
 
 [Tensorflow](https://www.tensorflow.org/) is an AI library developed by Google. PhotoPrism uses it to classify photos and detect faces. The necessary version (1.15, as of the writing of this) can be downloaded from the PhotoPrism website. 
