@@ -122,6 +122,7 @@ Then run the following commands to download the various dependencies for Tensorf
 $ sudo make all
 $ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
 $ sudo cp -a assets/ /opt/photoprism/assets/
+$ sudo chown -R photoprism:photoprism /opt/photoprism
 ```
 
 The dependencies step can produce errors when running in shells like ZSH. Ensure you're using Bash if this happens.
