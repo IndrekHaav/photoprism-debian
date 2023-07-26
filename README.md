@@ -30,7 +30,7 @@ $ sudo apt upgrade
 Next, a few packages need to be installed, these are mostly various helpers for installing PhotoPrism:
 
 ```shell
-$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg
+$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg exiftool darktable libpng-dev libjpeg-dev libtiff-dev imagemagick
 ```
 
 > **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
@@ -49,14 +49,14 @@ $ rm node_setup.sh
 
 #### Golang
 
-While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.19.3, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
+While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.20.6, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.19.3.linux-amd64.tar.gz
+$ wget https://golang.org/dl/go1.20.6.linux-amd64.tar.gz
 $ sudo rm -rf /usr/local/go
-$ sudo tar -C /usr/local -xzf go1.19.3.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.20.6.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
-$ rm go1.19.3.linux-amd64.tar.gz
+$ rm go1.20.6.linux-amd64.tar.gz
 ```
 
 This downloads and extracts Golang to `/usr/local/go` (deleting old installation, if it exists), and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
@@ -173,7 +173,7 @@ PHOTOPRISM_IMPORT_PATH="/var/lib/photoprism/photos/Import"
 
 # Uncomment below if using MariaDB/MySQL instead of SQLite (the default)
 # PHOTOPRISM_DATABASE_DRIVER="mysql"
-# PHOTOPRISM_DATABASE_SERVER="MYSQL_IP_HERE"
+# PHOTOPRISM_DATABASE_SERVER="MYSQL_IP_HERE:PORT"
 # PHOTOPRISM_DATABASE_NAME="DB_NAME"
 # PHOTOPRISM_DATABASE_USER="USER_NAME"
 # PHOTOPRISM_DATABASE_PASSWORD="PASSWORD"
