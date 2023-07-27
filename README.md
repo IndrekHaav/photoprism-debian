@@ -14,7 +14,7 @@ The purpose of this guide, therefore, is to provide instructions for setting up 
 
 ## DISCLAIMER
 
-This guide is provided in good faith and for informational purposes only. No claims are made or guarantees given that it will work on any  particular combination of hardware and software, or that it will be kept up-to-date with new releases of PhotoPrism. You will assume all responsibility for managing your PhotoPrism server, including the  prevention of unauthorised access and safeguards against data loss.
+This guide is provided in good faith and for informational purposes only. No claims are made or guarantees given that it will work on any particular combination of hardware and software, or that it will be kept up-to-date with new releases of PhotoPrism. You will assume all responsibility for managing your PhotoPrism server, including the prevention of unauthorised access and safeguards against data loss.
 
 ## Installing PhotoPrism
 
@@ -33,13 +33,13 @@ Next, a few core packages need to be installed, these are mostly various helpers
 $ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg
 ```
 
-Optionally, the following packages can be installed to enable better metadata extraction (exiftool), and RAW image conversion (darktable, imagemagick)
+> **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
+
+Optionally, the following packages can be installed to enable better metadata extraction (exiftool) and RAW image conversion (darktable, imagemagick):
 
 ```shell
 $ sudo apt install -y exiftool darktable libpng-dev libjpeg-dev libtiff-dev imagemagick
 ```
-
-> **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
 
 #### Node.js
 
