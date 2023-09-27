@@ -10,7 +10,7 @@
 
 The [PhotoPrism documentation](https://docs.photoprism.org/getting-started/) only covers Docker as an officially supported installation method. However, not everyone can, or wants to, use Docker. The only [guide that covers installation without Docker](https://web.archive.org/web/20200812001802/https://docs.photoprism.org/developer-guide/setup-fedora/#development-environment-fedora-32) is focused on development, and includes steps that are not necessary when one simply wants to run PhotoPrism.
 
-The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 12 "Bookworm", but should also work on older versions like Debian 11 "Bullseye", as well as derivatives like Ubuntu and Raspbian.
+The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 11 "Bullseye", but should also work on older versions like Debian 10 "Buster", as well as derivatives like Ubuntu and Raspbian.
 
 ## DISCLAIMER
 
@@ -55,14 +55,14 @@ $ rm node_setup.sh
 
 #### Golang
 
-While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.20.6, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
+While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.21.1, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.20.6.linux-amd64.tar.gz
+$ wget https://go.dev/dl/go1.21.1.linux-amd64.tar.gz
 $ sudo rm -rf /usr/local/go
-$ sudo tar -C /usr/local -xzf go1.20.6.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
-$ rm go1.20.6.linux-amd64.tar.gz
+$ rm go1.21.1.linux-amd64.tar.gz
 ```
 
 This downloads and extracts Golang to `/usr/local/go` (deleting old installation, if it exists), and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
