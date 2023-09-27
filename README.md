@@ -30,7 +30,7 @@ $ sudo apt upgrade
 Next, a few core packages need to be installed, these are mostly various helpers for installing PhotoPrism:
 
 ```shell
-$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg
+$ sudo apt install -y ca-certificates gcc g++ git gnupg make zip unzip ffmpeg
 ```
 
 > **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
@@ -43,14 +43,20 @@ $ sudo apt install -y exiftool darktable libpng-dev libjpeg-dev libtiff-dev imag
 
 #### Node.js
 
-While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, the version there is pretty old. [Nodesource](https://github.com/nodesource/distributions#deb) provides up-to-date versions. PhotoPrism recommends v18, so install that:
+As of the writing of this, [Debian 12 ships Node.js v18](https://packages.debian.org/bookworm/nodejs), so it can be installed from the default repos:
 
 ```shell
-$ wget https://deb.nodesource.com/setup_18.x -O node_setup.sh
-$ chmod +x node_setup.sh
-$ sudo ./node_setup.sh
 $ sudo apt install -y nodejs
-$ rm node_setup.sh
+```
+
+For distros that ship an older version, or in the case that PhotoPrism starts requiring a newer version of Node.js, it should be installed from [Nodesource]([https://github.com/nodesource/distributions#deb](https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions)) instead:
+
+```shell
+$ wget https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+$ sudo mv nodesource-repo.gpg.key /etc/apt/keyrings/nodesource.asc
+$ echo "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+$ sudo apt update
+$ sudo apt install -y nodejs
 ```
 
 #### Golang
