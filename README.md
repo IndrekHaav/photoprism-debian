@@ -114,12 +114,6 @@ See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms
 
 ### Download and install PhotoPrism
 
-Create a separate system account for running PhotoPrism:
-
-```shell
-$ sudo useradd --system photoprism
-```
-
 Create a directory where the compiled PhotoPrism code will be stored:
 
 ```shell
@@ -140,7 +134,6 @@ Then run the following commands to download the various dependencies for Tensorf
 $ sudo make all
 $ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
 $ sudo cp -a assets/ /opt/photoprism/assets/
-$ sudo chown -R photoprism:photoprism /opt/photoprism
 ```
 
 The dependencies step can produce errors when running in shells like ZSH. Ensure you're using Bash if this happens.
@@ -155,11 +148,22 @@ If you're still having problems, consult [the PhotoPrism makefile](https://githu
 
 ### Configure PhotoPrism
 
+Create a separate user account for running PhotoPrism:
+
+```shell
+$ sudo useradd --system photoprism
+```
+
 Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
 
 ```shell
 $ sudo mkdir /var/lib/photoprism
-$ sudo chown photoprism:photoprism /var/lib/photoprism
+```
+
+Ensure all relevant directories are owned by the newly created user:
+
+```shell
+$ sudo chown -R photoprism:photoprism /var/lib/photoprism /opt/photoprism
 ```
 
 Go to the newly added directory and create a file for PhotoPrism configuration parameters:
