@@ -10,7 +10,7 @@
 
 The [PhotoPrism documentation](https://docs.photoprism.org/getting-started/) only covers Docker as an officially supported installation method. However, not everyone can, or wants to, use Docker. The only [guide that covers installation without Docker](https://web.archive.org/web/20200812001802/https://docs.photoprism.org/developer-guide/setup-fedora/#development-environment-fedora-32) is focused on development, and includes steps that are not necessary when one simply wants to run PhotoPrism.
 
-The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 11 "Bullseye", but should also work on older versions like Debian 10 "Buster", as well as derivatives like Ubuntu and Raspbian.
+The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 12 "Bookworm", but should also work on older versions like Debian 11 "Bullseye", as well as derivatives like Ubuntu and Raspbian.
 
 ## DISCLAIMER
 
@@ -43,26 +43,32 @@ $ sudo apt install -y exiftool darktable libpng-dev libjpeg-dev libtiff-dev imag
 
 #### Node.js
 
-While [Node.js](https://nodejs.org/) is available in Debian (and Ubuntu) repos, the version there is pretty old. [Nodesource](https://github.com/nodesource/distributions#deb) provides up-to-date versions. PhotoPrism recommends v18, so install that:
+[Debian 12 ships Node.js v18](https://packages.debian.org/bookworm/nodejs), which as of the writing of this is recent enough, so it can be installed from the default repos:
 
 ```shell
-$ wget https://deb.nodesource.com/setup_18.x -O node_setup.sh
-$ chmod +x node_setup.sh
-$ sudo ./node_setup.sh
+$ sudo apt install -y nodejs npm
+```
+
+For distros that ship an older version, or in the case that PhotoPrism starts requiring a newer version of Node.js, it should be installed from [Nodesource](https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions) instead:
+
+```shell
+$ wget https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+$ sudo mv nodesource-repo.gpg.key /etc/apt/keyrings/nodesource.asc
+$ echo "deb [signed-by=/etc/apt/keyrings/nodesource.asc] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+$ sudo apt update
 $ sudo apt install -y nodejs
-$ rm node_setup.sh
 ```
 
 #### Golang
 
-While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.20.6, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
+While [Golang](https://go.dev/) is available in Debian (and Ubuntu) repos, the version is usually outdated (even in Debian backports). For the most up-to-date version, to keep up with what PhotoPrism uses, Golang needs to be downloaded and installed manually. The latest version as of the writing of this is 1.21.1, but [check the website](https://go.dev/dl/) and change the URLs below if necessary:
 
 ```shell
-$ wget https://golang.org/dl/go1.20.6.linux-amd64.tar.gz
+$ wget https://go.dev/dl/go1.21.1.linux-amd64.tar.gz
 $ sudo rm -rf /usr/local/go
-$ sudo tar -C /usr/local -xzf go1.20.6.linux-amd64.tar.gz
+$ sudo tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
 $ sudo ln -s /usr/local/go/bin/go /usr/local/bin/go
-$ rm go1.20.6.linux-amd64.tar.gz
+$ rm go1.21.1.linux-amd64.tar.gz
 ```
 
 This downloads and extracts Golang to `/usr/local/go` (deleting old installation, if it exists), and creates a symlink to the `go` binary in `/usr/local/bin` (so it's in the $PATH).
@@ -108,6 +114,12 @@ See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms
 
 ### Download and install PhotoPrism
 
+Create a separate system account for running PhotoPrism:
+
+```shell
+$ sudo useradd --system photoprism
+```
+
 Create a directory where the compiled PhotoPrism code will be stored:
 
 ```shell
@@ -142,12 +154,6 @@ $ NODE_OPTIONS=--max_old_space_size=1024 make all
 If you're still having problems, consult [the PhotoPrism makefile](https://github.com/photoprism/photoprism/blob/release/Makefile#L34) for the steps that `make all` executes, and try running them individually to isolate the problem.
 
 ### Configure PhotoPrism
-
-Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
-
-```shell
-$ sudo useradd --system photoprism
-```
 
 Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
 
@@ -228,8 +234,7 @@ Now run the following commands to start the service and to have it start automat
 
 ```shell
 $ sudo systemctl daemon-reload
-$ sudo systemctl start photoprism
-$ sudo systemctl enable photoprism
+$ sudo systemctl enable --now photoprism
 ```
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
