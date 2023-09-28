@@ -10,7 +10,7 @@
 
 The [PhotoPrism documentation](https://docs.photoprism.org/getting-started/) only covers Docker as an officially supported installation method. However, not everyone can, or wants to, use Docker. The only [guide that covers installation without Docker](https://web.archive.org/web/20200812001802/https://docs.photoprism.org/developer-guide/setup-fedora/#development-environment-fedora-32) is focused on development, and includes steps that are not necessary when one simply wants to run PhotoPrism.
 
-The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 11 "Bullseye", but should also work on older versions like Debian 10 "Buster", as well as derivatives like Ubuntu and Raspbian.
+The purpose of this guide, therefore, is to provide instructions for setting up a usable PhotoPrism installation on [Debian](https://www.debian.org/). The guide has been written for, and tested on, Debian 12 "Bookworm", but should also work on older versions like Debian 11 "Bullseye", as well as derivatives like Ubuntu and Raspbian.
 
 ## DISCLAIMER
 
@@ -30,7 +30,7 @@ $ sudo apt upgrade
 Next, a few core packages need to be installed, these are mostly various helpers for installing PhotoPrism:
 
 ```shell
-$ sudo apt install -y ca-certificates gcc g++ git gnupg make zip unzip ffmpeg
+$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg
 ```
 
 > **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
@@ -43,13 +43,13 @@ $ sudo apt install -y exiftool darktable libpng-dev libjpeg-dev libtiff-dev imag
 
 #### Node.js
 
-As of the writing of this, [Debian 12 ships Node.js v18](https://packages.debian.org/bookworm/nodejs), so it can be installed from the default repos:
+[Debian 12 ships Node.js v18](https://packages.debian.org/bookworm/nodejs), which as of the writing of this is recent enough, so it can be installed from the default repos:
 
 ```shell
-$ sudo apt install -y nodejs
+$ sudo apt install -y nodejs npm
 ```
 
-For distros that ship an older version, or in the case that PhotoPrism starts requiring a newer version of Node.js, it should be installed from [Nodesource]([https://github.com/nodesource/distributions#deb](https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions)) instead:
+For distros that ship an older version, or in the case that PhotoPrism starts requiring a newer version of Node.js, it should be installed from [Nodesource](https://github.com/nodesource/distributions#debian-and-ubuntu-based-distributions) instead:
 
 ```shell
 $ wget https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
@@ -114,6 +114,12 @@ See <https://dl.photoprism.org/tensorflow> for download URLs for other platforms
 
 ### Download and install PhotoPrism
 
+Create a separate system account for running PhotoPrism:
+
+```shell
+$ sudo useradd --system photoprism
+```
+
 Create a directory where the compiled PhotoPrism code will be stored:
 
 ```shell
@@ -148,12 +154,6 @@ $ NODE_OPTIONS=--max_old_space_size=1024 make all
 If you're still having problems, consult [the PhotoPrism makefile](https://github.com/photoprism/photoprism/blob/release/Makefile#L34) for the steps that `make all` executes, and try running them individually to isolate the problem.
 
 ### Configure PhotoPrism
-
-Instead of running PhotoPrism as root or your own user, it is advisable to create a separate user account for it:
-
-```shell
-$ sudo useradd --system photoprism
-```
 
 Create a directory where PhotoPrism will store files like metadata, thumbnails, database (if using SQLite) and so on:
 
@@ -234,8 +234,7 @@ Now run the following commands to start the service and to have it start automat
 
 ```shell
 $ sudo systemctl daemon-reload
-$ sudo systemctl start photoprism
-$ sudo systemctl enable photoprism
+$ sudo systemctl enable --now photoprism
 ```
 
 If all went well, you should be able to open `http://YOUR-IP-HERE:2342` in a web browser and see the PhotoPrism interface. Log in as "admin" with the password set in the `.env` file.
