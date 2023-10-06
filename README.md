@@ -30,7 +30,7 @@ $ sudo apt upgrade
 Next, a few core packages need to be installed, these are mostly various helpers for installing PhotoPrism:
 
 ```shell
-$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg
+$ sudo apt install -y gcc g++ git gnupg make zip unzip ffmpeg libheif-examples
 ```
 
 > **Note:** If running in an environment where you're root by default, like in an LXC container, make sure sudo is installed, it'll be needed in a later step.
