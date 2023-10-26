@@ -16,6 +16,21 @@ This guide is provided in good faith and for informational purposes only. No cla
 
 ## Installing PhotoPrism
 
+### Prerequisites
+
+If you haven't done so already, ensure your server's packages are up-to-date:
+
+```shell
+$ sudo apt update
+$ sudo apt dist-upgrade
+```
+
+Next, a few optional packages can be installed to enable extra features like better metadata extraction and RAW image conversion:
+
+```shell
+$ sudo apt install -y ffmpeg exiftool darktable libpng-dev libjpeg-dev libtiff-dev imagemagick
+```
+
 ### Download PhotoPrism
 
 PhotoPrism provides [pre-built Linux packages](https://dl.photoprism.app/pkg/linux/) on their website. Download the latest build and extract it to `/opt/photoprism`:
@@ -234,7 +249,7 @@ First, update your system:
 
 ```shell
 $ sudo apt update
-$ sudo apt upgrade
+$ sudo apt dist-upgrade
 ```
 
 Then, stop the PhotoPrism service:
