@@ -228,9 +228,7 @@ $ systemctl list-timers photoprism-bg
 
 ## Updating PhotoPrism
 
-New versions of PhotoPrism are published to their Github repository: https://github.com/photoprism/photoprism/releases
-
-If a new version is published, the following steps need to be done.
+When a new version of PhotoPrism is published, the following steps need to be done.
 
 First, update your system:
 
@@ -239,31 +237,34 @@ $ sudo apt update
 $ sudo apt upgrade
 ```
 
-Also check for new Golang version and install manually using [the instructions from above](#golang).
-
 Then, stop the PhotoPrism service:
 
 ```shell
 $ sudo systemctl stop photoprism
 ```
 
-Then, navigate to the PhotoPrism source code directory and pull the latest version from Github:
+Delete the contents of the directory where you extracted the PhotoPrism build package:
 
 ```shell
-$ cd photoprism
-$ git pull --force
+$ sudo rm -rf /opt/photoprism/*
 ```
 
-Upgrade dependencies and re-run the build steps from above.
+Optionally, make a backup copy of the directory first so you can easily revert if necessary:
 
 ```shell
-$ sudo make upgrade
-$ sudo make all
-$ sudo ./scripts/build.sh prod /opt/photoprism/bin/photoprism
-$ sudo rm -rf /opt/photoprism/assets/
-$ sudo cp -a assets/ /opt/photoprism/assets/
+$ sudo cp /opt/photoprism/ /opt/photoprism.bak/
+```
+
+Download the latest build and extract it:
+
+```shell
+$ wget https://dl.photoprism.app/pkg/linux/amd64.tar.gz
+$ sudo tar xzf amd64.tar.gz -C /opt/photoprism/
 $ sudo chown -R photoprism:photoprism /opt/photoprism
+$ rm amd64.tar.gz
 ```
+
+As before, change the URLs and filenames if you're running on an ARM-based system.
 
 Finally, restart the PhotoPrism service:
 
@@ -279,16 +280,10 @@ Run the following command to check the service status:
 $ systemctl status photoprism
 ```
 
-Also check the [PhotoPrism troubleshooting checklists](https://docs.photoprism.app/getting-started/troubleshooting/). Some of the information there is Docker-specific, but a lot is useful even with non-Docker setups.
-
-If all else fails, you can try deleting `~/photoprism` (where you cloned the source code) and `/opt/photoprism` (where the built files were copied) and re-installing PhotoPrism. As long as you don't delete `/var/lib/photoprism`, your data and settings won't be lost.
-
-In some cases you might run into a bug in PhotoPrism that has been fixed but the fix is not yet released. In that case, you can try switching to the "preview" branch (or even the bleeding-edge "develop" branch), although note that this might introduce other issues compared to the stable "release" version.
-
-To switch branches (e.g. to "preview"), go to the directory where you downloaded the PhotoPrism source code and enter the following command:
+The following command can provide more information:
 
 ```shell
-$ git checkout preview
+$ sudo journalctl -u photoprism.service
 ```
 
-Then re-run the steps to build and install PhotoPrism.
+Also check the [PhotoPrism troubleshooting checklists](https://docs.photoprism.app/getting-started/troubleshooting/). Some of the information there is Docker-specific, but a lot is useful even with non-Docker setups.

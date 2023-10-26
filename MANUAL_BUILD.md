@@ -129,3 +129,17 @@ $ NODE_OPTIONS=--max_old_space_size=1024 make all
 ```
 
 If you're still having problems, consult [the PhotoPrism makefile](https://github.com/photoprism/photoprism/blob/release/Makefile#L34) for the steps that `make all` executes, and try running them individually to isolate the problem.
+
+## Troubleshooting
+
+If building PhotoPrism fails, you can try deleting `~/photoprism` (where you cloned the source code) and `/opt/photoprism` (where the built files were copied) and re-running the build steps PhotoPrism.
+
+In some cases you might run into a bug in PhotoPrism that has been fixed but the fix is not yet released. In that case, you can try switching to the "preview" branch (or even the bleeding-edge "develop" branch), although note that this might introduce other issues compared to the stable "release" version.
+
+To switch branches (e.g. to "preview"), go to the directory where you downloaded the PhotoPrism source code and enter the following command:
+
+```shell
+$ git checkout preview
+```
+
+Then re-run the steps to build and install PhotoPrism.
