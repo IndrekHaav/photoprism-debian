@@ -31,6 +31,20 @@ Next, a few optional packages can be installed to enable extra features like bet
 $ sudo apt install -y ffmpeg exiftool darktable libpng-dev libjpeg-dev libtiff-dev imagemagick
 ```
 
+### Database
+
+PhotoPrism by default uses SQLite as the database. This is suitable for testing and smaller instances, but for better performance, MariaDB is recommended. It can be installed with the following command:
+
+```shell
+$ sudo apt install -y mariadb-server
+```
+
+After installing MariaDB, the following additional steps need to be completed:
+
+ 1. Secure the installation: https://mariadb.com/kb/en/mariadb-secure-installation/
+ 2. Optional: enable remote access: https://mariadb.com/kb/en/configuring-mariadb-for-remote-client-access/
+ 3. Create PhotoPrism database and user: https://docs.photoprism.app/getting-started/advanced/databases/#configuration
+
 ### Download PhotoPrism
 
 PhotoPrism provides [pre-built Linux packages](https://dl.photoprism.app/pkg/linux/) on their website. Download the latest build and extract it to `/opt/photoprism`:
