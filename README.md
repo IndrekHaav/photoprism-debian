@@ -25,10 +25,10 @@ $ sudo apt update
 $ sudo apt dist-upgrade
 ```
 
-Next, a few optional packages can be installed to enable extra features like better metadata extraction and RAW image conversion:
+Next, a few optional packages can be installed to enable extra features like better metadata extraction and image processing:
 
 ```shell
-$ sudo apt install -y ffmpeg exiftool darktable libpng-dev libjpeg-dev libtiff-dev imagemagick
+$ sudo apt install -y ffmpeg exiftool darktable libpng-dev libjpeg-dev libtiff-dev libvips imagemagick
 ```
 
 ### Database
