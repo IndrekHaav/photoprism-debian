@@ -1,3 +1,5 @@
+**Repository moved to: https://codeberg.org/indrek/photoprism-debian**
+
 # Installing PhotoPrism on Debian
 
 ## Background
